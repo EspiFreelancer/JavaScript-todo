@@ -38,8 +38,32 @@
 	});
 
 	function refreshUI(){
-
+		renderTodos();
+		// renderLists();
 	};
+
+	// To display the task list
+	function renderTodos(){
+		const todosContainer = document.querySelector('#todos');
+		todosContainer.innerHTML = '';
+
+		todos.forEach(todo => {
+			todosContainer.innerHTML += renderTodo(todo);
+		});
+	}
+
+	// To display the task
+	function renderTodo(todo){
+		return `
+		<div class="todo" data-id="${todo.id}">
+			<label class="checkbox-container">${todo.text}
+				<input type="checkbox" ${(todo.completed)? 'checked="checked"': ''} />
+				<span class="checkmark"></span>
+			</label>
+			<button></button>
+		</div>
+		`;
+	}
 
 	// to generate random ID for list
 	function uuidv4(){
