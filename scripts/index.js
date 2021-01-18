@@ -22,6 +22,7 @@
 		return {id: id, text: text, list:list, completed:completed};
 	}
 
+	// To add a task
 	form.addEventListener('submit', e => {
 		e.preventDefault();
 		const text = input.value.trim();
@@ -39,18 +40,54 @@
 
 	function refreshUI(){
 		renderTodos();
-		// renderLists();
+		renderLists();
 	};
 
-	// To display the task list
 	function renderTodos(){
+		
+		// To display the task list
 		const todosContainer = document.querySelector('#todos');
 		todosContainer.innerHTML = '';
 
 		todos.forEach(todo => {
 			todosContainer.innerHTML += renderTodo(todo);
 		});
+
+		// To change the task status
+		document.querySelectorAll('.todo label input').forEach(item => {
+			item.addEventListener('click', e => {
+				const id = e.target.parentNode.parentNode.getAttribute('data-id');
+				const index = todos.findIndex(todo => todo.id === id);
+
+				todos[index].completed = !todos[index].completed;
+			});
+		});
+
+		// To delete a task
+		document.querySelectorAll('.todo button').forEach(item => {
+			item.addEventListener('click', e => {
+				const id = e.target.parentNode.getAttribute('data-id');
+				const obj = getItemAndIndex(todos, {id: id});
+
+				todos.splice(obj.index, 1);
+
+				refreshUI();
+			});
+		});
 	}
+
+	// To get the item and index of a task
+	function getItemAndIndex(arr, obj){
+		let i = 0;
+		const key = Object.keys(obj);
+		const value = obj[key];
+
+		for(i = 0; i < arr.length; i++){
+			if(arr[i][key] === value){
+				return {index: i, item: arr[i]};
+			};
+		};
+	};
 
 	// To display the task
 	function renderTodo(todo){
@@ -64,6 +101,9 @@
 		</div>
 		`;
 	}
+
+	// To display the list
+	function renderLists(){};
 
 	// to generate random ID for list
 	function uuidv4(){
