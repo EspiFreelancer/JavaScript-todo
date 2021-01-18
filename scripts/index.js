@@ -103,7 +103,33 @@
 	}
 
 	// To display the list
-	function renderLists(){};
+	function renderLists(){
+		lists.forEach(list => {
+			list.count = 0;
+		});
+
+		todos.forEach(todo => {
+			lists.forEach(list => {
+				if(todo.list === list.id){
+					list.count++;
+				}
+			});
+		});
+
+		listsContainer.innerHTML = '';
+		lists.forEach(list => {
+			listsContainer.innerHTML += renderListsItem(list);
+		});
+	};
+
+	function renderListsItem(list) {
+		return `
+			<div class="list">
+				<h3>${list.text}</h3>
+				${list.count} tareas
+			</div>
+		`;
+	}
 
 	// to generate random ID for list
 	function uuidv4(){
